@@ -1,0 +1,18 @@
+- detect and list the asset used for that asset when import, export and delete including itself
+maybe need database
+
+- categorize by project, sequence and shot
+
+- all files are sharing in somewhere, team members can use it synchrously
+
+- render image to preview that file
+
+
+#page1 : import&delete external object
+
+#page2 : view&edit file information
+
+#page3 : link this files to project seq and shot
+
+
+
