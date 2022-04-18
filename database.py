@@ -16,7 +16,7 @@ reload(schema)
 #load_dotenv()
 class Database:
     def __init__(self):
-        cluster = MongoClient("mongodb+srv://sorasit:mek2555137@mek.ghsah.mongodb.net/MayaPipeline?retryWrites=true&w=majority")
+        cluster = MongoClient()
 
         self._db = cluster["MayaPipeline"]
         self._file = self._db["File"]
