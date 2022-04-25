@@ -3,7 +3,7 @@ maybe need database
 
 - categorize by project, sequence and shot
 
-- all files are sharing in somewhere, team members can use it synchrously
+- all files are sharing in somewhere, team members can access it
 
 - render image to preview that file
 

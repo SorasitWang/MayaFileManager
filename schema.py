@@ -14,14 +14,14 @@ class Sequence:
         pass
 
 class Shot:
-    def __init__(self,name,description="",sequences=[],files=[]):
+    def __init__(self,name,description="",sequences=[]):
         self.name = name
         self.description = description
-        self.files = files
         self.sequences = sequences
 
 class File:
-    def __init__(self,id,name="",rela=[],createdAt=None,lastUpdate=None,description="",path="",image=""):
+    def __init__(self,id,name="",rela=[],createdAt=None,lastUpdate=None,description="",path="",image="",
+            shots=[],components=[]):
         self.id = id
         self.name = name
         self.relation = rela
@@ -30,6 +30,8 @@ class File:
         self.description = description
         self.path = path
         self.image = image
+        self.shots = shots
+        self.components = components
 
     def toDict(self):
         re = dict()
@@ -40,6 +42,7 @@ class File:
         re["description"] = self.description
         re["image"] = self.image
         re["path"] = self.path
+        re["shots"] = self.shots
         return re
 
 print("Update schema")
