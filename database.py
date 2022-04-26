@@ -44,8 +44,14 @@ class Database:
         print("seq ",self.sequences)
         print(self.shots)
         print(self.projects)
-    def updateOneFile(self,file:File):
-        newvalues = {"$set" : file.toDict()}
+
+    def updateOneFile(self,caller,file:File):
+        if caller==1:
+            newvalues = {"$set" : {"relation":file.relation}}
+        else :
+            d = file.toDict()
+            d.pop("relation",None)
+            newvalues = {"$set" : file.toDict()}
         print(newvalues)
         return self._file.update_one({"_id":file.id},newvalues )
 

@@ -59,25 +59,41 @@ class FileManager :
         cmds.workspace(fileRule=['images',"D:\program\MayaScript"])
         self.db = Database()
         self.file : File = self.db.getDataOneFile("Test")
-       
-        window = cmds.window( widthHeight=(400, 500) )
+        self.page1 = None
+        self.page2 = None
+        self.page3 = None
+
+        window = cmds.window( widthHeight=(400, 500),cc=self.close )
         form = cmds.formLayout()
         tabs = cmds.tabLayout(innerMarginWidth=5, innerMarginHeight=5)
         cmds.formLayout( form, edit=True, attachForm=((tabs, 'top', 0), (tabs, 'left', 0), (tabs, 'bottom', 0), (tabs, 'right', 0)) )
     
-        page1 = assetManage.AssetManage(self.file,self.db)
-        child1 = page1._main     
+        self.page1 = assetManage.AssetManage(self.file,self.db)
+        child1 = self.page1._main     
            
-        page2 = fileInfo.FileInfo(self.file,self.db)
-        child2 = page2._main       
+        self.page2 = fileInfo.FileInfo(self.file,self.db)
+        child2 = self.page2._main       
         
-        page3 = linkAnim.LinkAnim(self.file,self.db)
-        child3 = page3._main
-       
+        self.page3 = linkAnim.LinkAnim(self.file,self.db)
+        child3 = self.page3._main
         cmds.tabLayout( tabs, edit=True, tabLabel=((child1, 'One'), (child2, 'Two') ,(child3,"Three")) )
-        cmds.showWindow()   
+    
 
         cmds.showWindow( window )
+
+    def close(self,*args):
+        result = cmds.confirmDialog( title='Confirm', message='Do you want to save the change?',
+         button=['Yes','No'], defaultButton='Yes', cancelButton='No', dismissString='No' )
+        dir = "D:/program/MayaScript/imgShow/"
+        for f in os.listdir(dir):
+            os.remove(os.path.join(dir, f))
+        if result == "No": return
+        self.page1.close()
+        self.page2.close()
+        self.page3.close()
+        #clear imgShow 
+        
+
     
 f = FileManager()
 

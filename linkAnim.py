@@ -20,7 +20,7 @@ class LinkAnim :
     def __init__(self,file:File,db : Database):
 
         self.db = db
-        self._main = cmds.scrollLayout( 'page3' )
+        self._main = cmds.scrollLayout( )
         self.file = file
         self.projects = self.db.projects
         self.sequences = self.db.sequences
@@ -166,4 +166,7 @@ class LinkAnim :
                     self.shotMap[seq].append(shot)
         print(self.seqMap)
         print(self.shotMap)
+
+    def close(self):
+        return
         

@@ -23,6 +23,7 @@ class AssetManage :
     def __init__(self,file : File,db : Database):
 
         self.assets = dict()
+        self.db = db
         self.selectedObjs = []
         self.deleteObjs = []
         self.nameNewFile = None
@@ -42,7 +43,7 @@ class AssetManage :
         cmds.text( label='Select obj to import' )
 
         #self.selectObj = cmds.textField("focusdistance", enterCommand=self.handleSelectObj)
-        self._selectedObjs = cmds.textScrollList( append=self.files,ams=True)
+        self._selectedObjs = cmds.textScrollList( append=self.files,ams=True,height=150)
        
         # now set the selection command and pass in the textScrollList 
         cmds.textScrollList( self._selectedObjs,e=True, sc=partial(self.handleSelectObj, self._selectedObjs) ) 
@@ -51,13 +52,13 @@ class AssetManage :
 
         l = 'Select obj to delete'
         cmds.text( label=l )
-        self._deleteObjs = cmds.textScrollList(append=list(self.assets.keys()),ams=True)
+        self._deleteObjs = cmds.textScrollList(append=list(self.assets.keys()),ams=True,height=150)
         cmds.textScrollList( self._deleteObjs,e=True, sc=partial(self.handleDeleteObj, self._deleteObjs) ) 
         cmds.button( label='Delete', command=self.deleteFile)
 
         l = 'Select obj to unlink'
         cmds.text( label=l )
-        self._unlinkObjs = cmds.textScrollList(append=self.file.relation,ams=True)
+        self._unlinkObjs = cmds.textScrollList(append=self.file.relation,ams=True,height=150)
         cmds.textScrollList( self._unlinkObjs,e=True, sc=partial(self.handleUnlinkObj, self._unlinkObjs) ) 
         cmds.button( label='Delete', command=self.unlinkFile)
         
@@ -141,4 +142,14 @@ class AssetManage :
         cmds.file(  f=True, new=True )
         cmds.file( rename=self.newFile )
         cmds.file( f=True, type='mayaBinary', save=True )
+
+    def close(self):
+        if len(self.assets.keys()) == 1 :
+            self.file.relation += self.assets.keys()
+        else :
+            for asset in self.assets.keys():
+                self.file.relation += asset
+            
+        self.db.updateOneFile(1,file=self.file)
+        return
         

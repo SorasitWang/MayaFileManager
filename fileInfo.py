@@ -1,6 +1,8 @@
 from copy import deepcopy
 from datetime import datetime
 from imp import reload
+
+
 import maya.cmds as cmds
 
 
@@ -23,7 +25,7 @@ class FileInfo :
         self.db = db
         self.file = file
         self.tmpFile = deepcopy(self.file)
-        self._main = cmds.scrollLayout( 'page2' , width=300)
+        self._main = cmds.scrollLayout( width=300)
         #cmds.file(q=True,shn=True,sn=True)
         cmds.frameLayout( label='File detail')
         cmds.setParent( '..' )
@@ -42,7 +44,10 @@ class FileInfo :
         dir = "D:/program/MayaScript/imgShow/"
         
         downloadImage(self.file.image,dir)
-        self._image = cmds.image( parent=self._info,image=dir+self.file.image,height=100)
+
+        thumbnail =self.file.image.split(".")[0] + "_thumbnail."+self.file.image.split(".")[1]
+        self._image = cmds.image( )
+        cmds.image(self._image,parent=self._info,image=dir+thumbnail,height=100,width=100)
 
         self._description = cmds.scrollField(parent=self._info, editable=False, wordWrap=True,text=self.file.description)
         cmds.scrollField(self._description,edit=True,parent=self._info, editable=False, wordWrap=True)
@@ -77,7 +82,7 @@ class FileInfo :
             self.tmpFile.name = cmds.textField(self._name,query=True,text=True)
             self.tmpFile.description = cmds.scrollField(self._description,query=True,text=True)
             self.tmpFile.lastUpdated = datetime.now()
-            self.db.updateOneFile(self.tmpFile)
+            self.db.updateOneFile(2,self.tmpFile)
 
 
             cmds.textField(self._name,editable=False,edit=True)
@@ -100,3 +105,6 @@ class FileInfo :
         print(result)
         print(uploadImage(result)) # prints out the names of all the rendered files
         pass
+    
+    def close(self):
+        return

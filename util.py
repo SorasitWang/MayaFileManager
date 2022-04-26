@@ -1,6 +1,9 @@
 
 import os
 from google.cloud import storage
+from PIL import Image
+import maya.OpenMaya as om
+
 
 bucketName = "maya_file_image"
 client = storage.Client.from_service_account_json("D:\\program\\MayaScript\\key\\cloud.json")
@@ -30,3 +33,22 @@ def downloadImage(name,dir):
     
     blob = bucket.blob(name)
     blob.download_to_filename(dir+name)
+
+    #thumnail
+    
+
+    def resizeImage(src, out, width, height):
+
+        image = om.MImage()
+        image.readFromFile(dir+src)
+
+        image.resize( width, height )
+        image.writeToFile( dir+out, 'png')
+
+
+    resizeImage(name,name.split(".")[0]+'_thumbnail.'+name.split(".")[1], 100, 100)
+
+
+downloadImage("555555.png","D:/program/MayaScript/imgShow/")
+
+
